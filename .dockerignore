@@ -1,0 +1,6 @@
+*Dockerfile*
+*docker-compose*
+node_modules
+.next
+out
+README.md
