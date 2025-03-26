@@ -3,19 +3,28 @@
  */
 
 export const DEFAULT_SPECIAL_CHARS = '-';
-export const MAX_SPECIAL_CHARS = 2;
+export const MAX_SPECIAL_CHARS = 10;
+export const DEFAULT_PASSWORD_LENGTH = 16;
+export const MIN_PASSWORD_LENGTH = 8;
+export const MAX_PASSWORD_LENGTH = 32;
+
+export type PasswordType = 'Strong' | 'Normal' | 'Custom';
 
 export function generatePassword(
-  isStrong: boolean,
+  passwordType: PasswordType,
   specialChars: string = DEFAULT_SPECIAL_CHARS,
-  format: string = "6-6-5",
-  normalLength: number = 16
+  format: string = "6-4-6-4",
+  passwordLength: number = DEFAULT_PASSWORD_LENGTH
 ): string {
-  if (isStrong) {
-    const limitedSpecialChars = specialChars.substring(0, MAX_SPECIAL_CHARS);
-    return generateStrongPassword(format, limitedSpecialChars);
-  } else {
-    return generateNormalPassword(normalLength);
+  switch (passwordType) {
+    case 'Strong':
+      return generateStrongPassword(format, "-");
+    case 'Normal':
+      return generateNormalPassword(12);
+    case 'Custom':
+      return generateCustomPassword(passwordLength, specialChars);
+    default:
+      return generateNormalPassword(12);
   }
 }
 
@@ -27,6 +36,7 @@ function generateStrongPassword(format: string, specialChars: string): string {
   }
   
   const specialCharsArray = specialChars.split('');
+  console.log(segments)
   const separatorCount = segments.length - 1;
 
   let password = '';
@@ -49,7 +59,30 @@ function generateStrongPassword(format: string, specialChars: string): string {
 }
 
 function generateNormalPassword(length: number): string {
-  return generateRandomString(length, false);
+  return generateRandomString(length, true);
+}
+
+function generateCustomPassword(length: number, specialChars: string): string {
+  const lowerChars = 'abcdefghijklmnopqrstuvwxyz';
+  const upperChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const numbers = '0123456789';
+  
+  let result = '';
+  const specialCharsArray = specialChars.split('');
+  
+  result += lowerChars.charAt(Math.floor(Math.random() * lowerChars.length));
+  result += upperChars.charAt(Math.floor(Math.random() * upperChars.length));
+  result += numbers.charAt(Math.floor(Math.random() * numbers.length));
+  result += specialCharsArray[Math.floor(Math.random() * specialCharsArray.length)];
+  
+  const allChars = lowerChars + upperChars + numbers + specialChars;
+  
+  for (let i = result.length; i < length; i++) {
+    result += allChars.charAt(Math.floor(Math.random() * allChars.length));
+  }
+  
+  // Shuffle the password
+  return result.split('').sort(() => 0.5 - Math.random()).join('');
 }
 
 function generateRandomString(length: number, includeUppercase: boolean): string {
