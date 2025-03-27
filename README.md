@@ -51,9 +51,9 @@ A client-side only password generator built with Next.js that creates secure pas
    docker build -t passgen:v1 .
    ```
 
-- Run  the container image: [ Use the port that is not use in your host ]
+- Run  the container image: [ Assuming 8080 is not being used by other processes ]
    ```bash
-   docker run -d -p 80:80 passgen:v1
+   docker run -d -p 8080:80 passgen:v1
    ```
 
-- Open [http://localhost](http://localhost) in your browser to see the application.
+- Open [http://localhost:8080](http://localhost:8080) in your browser to see the application.
