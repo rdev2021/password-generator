@@ -57,3 +57,8 @@ A client-side only password generator built with Next.js that creates secure pas
    ```
 
 - Open [http://localhost:8080](http://localhost:8080) in your browser to see the application.
+
+## ☁️ Demo Page
+
+The [demo page](https://password-generator-615.pages.dev/) is hosted on Cloudflare Pages.
+ 
